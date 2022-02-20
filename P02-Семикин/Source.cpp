@@ -1,5 +1,6 @@
 #include <iostream>
 #include <math.h>
+#include <limits.h>
 
 const int MAX = 100;
 
@@ -98,30 +99,29 @@ float* sumPositivElem(float matrix[MAX][MAX], int rows, int cols)
 	return mas;
 }
 
-void minSumSupDiag(float matrix[MAX][MAX], int rows, int cols)
+void minSumSupDiag(float matrix[MAX][MAX], int rows)
 {
-	float sum = 0;
-	for (int i = 0; i < rows - 1; i++)
-	{
-		sum = 0;
-		for (int j = 0; j < i + 1; j++)
-			sum += fabs(matrix[j][i - j]);
-		printf("Выше побочной диагонали = %3.1f\n", sum);
-	}
-	sum = 0;
+	float sum = 0, minsum = INT_MAX;
+
 	for (int i = 0; i < rows; i++)
 	{
-		sum += fabs(matrix[i][rows - 1 - i]);
+		sum = 0;
+		for (int j = i; j >= 0; --j)
+			sum += fabs(matrix[i - j][j]);
+		if (sum < minsum)
+			minsum = sum;
+		//printf("%3.1f\n", sum);
 	}
-	printf("Побочная диагональ = %3.1f\n", sum);
-
-	for (int i = 1; i < rows; i++)
+	for (int j = 1; j < rows; j++)
 	{
 		sum = 0;
-		for (int j = 0; j < rows - i; j++)
-			sum += fabs(matrix[i + j][rows - i - j]);
-		printf("Ниже побочной диагонали = %3.1f\n", sum);
+		for (int i = j; i < rows; ++i)
+			sum += fabs(matrix[i][rows - 1 - (i - j)]);
+		if (sum < minsum)
+			minsum = sum;
+		//printf("%3.1f\n", sum);
 	}
+	printf("%3.1f\n", minsum);
 }
 
 	
@@ -170,7 +170,7 @@ int main()
 		if (p[i] != -107374176.0)						
 			printf("%3.1f\n", p[i]);
 	// б)Минимум среди сумм модулей элементов диагоналей, параллельных побочной диагонали матрицы.
-	minSumSupDiag(matrix, rows, cols);
+	minSumSupDiag(matrix, rows);
 
 
 
