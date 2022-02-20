@@ -19,7 +19,7 @@ int askUserAction()
 	int choise;
 	do {
 		printf("Введите:\n1 - Определить сумму элементов в тех столбцах, которые не содержат отрицательных элементов.\n");
-		printf("2 - Определить минимум среди сумм модулей элементов диагоналей, параллельных побочной диагонали матрицы.\n");
+		printf("2 - Определить минимум среди сумм модулей элементов диагоналей, параллельных побочной диагонали матрицы(Матрица должна быть квадратной).\n");
 		printf("3 - Упорядочить строки матрицы по убыванию количества разных элементов в каждой строке.\n");
 		printf("4 - Найти номер первой из строк, не содержащей ни одного положительного элемента.\nВыбор:");
 		scanf_s("%d", &choise);
@@ -116,27 +116,32 @@ float* sumPositivElem(float matrix[MAX][MAX], int rows, int cols)
 	return mas;
 }
 
-void minSumSupDiag(float matrix[MAX][MAX], int rows)
+void minSumSupDiag(float matrix[MAX][MAX], int rows, int cols)
 {
-	float sum = 0, minsum = INT_MAX;
+	if (rows == cols)
+	{
+		float sum = 0, minsum = INT_MAX;
 
-	for (int i = 0; i < rows; i++)
-	{
-		sum = 0;
-		for (int j = i; j >= 0; j--)
-			sum += fabs(matrix[i - j][j]);
-		if (sum < minsum)
-			minsum = sum;
+		for (int i = 0; i < rows; i++)
+		{
+			sum = 0;
+			for (int j = i; j >= 0; j--)
+				sum += fabs(matrix[i - j][j]);
+			if (sum < minsum)
+				minsum = sum;
+		}
+		for (int j = 1; j < rows; j++)
+		{
+			sum = 0;
+			for (int i = j; i < rows; i++)
+				sum += fabs(matrix[i][rows - 1 - (i - j)]);
+			if (sum < minsum)
+				minsum = sum;
+		}
+		printf("%3.1f\n", minsum);
 	}
-	for (int j = 1; j < rows; j++)
-	{
-		sum = 0;
-		for (int i = j; i < rows; i++)
-			sum += fabs(matrix[i][rows - 1 - (i - j)]);
-		if (sum < minsum)
-			minsum = sum;
-	}
-	printf("%3.1f\n", minsum);
+	else
+		printf("Матрица не квадратная!");
 }
 
 void sortRows(float matrix[MAX][MAX], int rows, int cols)
@@ -150,24 +155,20 @@ void sortRows(float matrix[MAX][MAX], int rows, int cols)
 
 int numberFirstRowsNoPosElem(float matrix[MAX][MAX], int rows, int cols)
 {
-	int counter = 0;
-	for (int j = 0; j < cols; j++)
-		for (int i = 0; i < rows; i++)
+	for (int i = 0; i < rows; i++)
+	{
+		int counter = 0;
+		for (int j = 0; j < cols; j++)
 		{
-			if (matrix[j][i] > 0)
-				break;
+			if (matrix[i][j] <= 0)
+				counter++;
 			else
-			{
-				counter = i;
-				return counter;
-			}
+				break;
 		}
+		if (counter == cols)
+			return i;
+	}
 }
-
-	
-
-
-
 
 int main()
 {
@@ -210,7 +211,7 @@ int main()
 	{
 	case 1:	// а)Cумма элементов в положительных столбцах.
 	{
-		printf("Cумму элементов столбцах, которые не содержат отрицательных элементов:\n");
+		printf("Cумма элементов в столбцах, которые не содержат отрицательных элементов:\n");
 		float* p = sumPositivElem(matrix, rows, cols);
 		for (int i = 0; i < cols; i++)
 			if (p[i] != -107374176.0)
@@ -220,28 +221,27 @@ int main()
 	case 2: // б)Минимум среди сумм модулей элементов диагоналей, параллельных побочной диагонали матрицы.
 	{
 		printf("Минимум среди сумм модулей элементов диагоналей, параллельных побочной диагонали матрицы:\n");
-		minSumSupDiag(matrix, rows);
+		minSumSupDiag(matrix, rows, cols);
 		break;
 	}
 	case 3: //в)Упорядочить строки матрицы по убыванию количества разных элементов в каждой строке.
 	{
 		printf("Упорядочить строки матрицы по убыванию количества разных элементов в каждой строке:\n");
 		sortRows(matrix, rows, cols);
-
 		break;
 	}
 	case 4:
 	{
 		printf("Номер первой из строк, не содержащей ни одного положительного элемента:\n");
-		int number = numberFirstRowsNoPosElem(matrix, rows, cols);
-		printf("%d", number);
+		int number = numberFirstRowsNoPosElem(matrix, rows, cols) + 1;
+		if (number > cols)
+			printf("Нет такой строки!");
+		else
+			printf("№%d", number);
 		break;
 	}
 	}
-	
-
-
-
+	printf("\n");
 
 	return 0;
 }
