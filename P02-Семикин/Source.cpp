@@ -146,11 +146,43 @@ void minSumSupDiag(float matrix[MAX][MAX], int rows, int cols)
 
 void sortRows(float matrix[MAX][MAX], int rows, int cols)
 {
-	
+	float mas[MAX], min[MAX];
+	int s = 0;
+	for (int k = 0; k < rows; k++)
+	{
+		int counter = 0, counter2 = INT_MAX;
 
+		for (int i = 0; i < cols; i++)
+			mas[i] = matrix[k][i];
+			
+		for (int j = 0; j < cols - 1; j++)
+			for (int i = 0; i < cols - 1 - j; i++)
+				if (mas[i] < mas[i + 1])
+				{
+					float tmp = mas[i];
+					mas[i] = mas[i + 1];
+					mas[i + 1] = tmp;
+				}
+		
+		for (int i = 0; i < cols; i++)
+			printf("%5.1f  ", mas[i]);
 
+		for (int i = 0; i < cols; i++)
+			if (mas[i] == mas[i + 1])
+				counter++;
+		printf("\tКоличество повторов - %d\n", counter);
+		/*if (counter2 < counter)
+		{
+			for (s; s < cols; s++)
+			{
+				min[s] = mas[s];
+				printf("%3.1f ", min[s]);
+			}
+		}
 
-
+		counter2 = counter;
+		s += cols;*/
+	}
 }
 
 int numberFirstRowsNoPosElem(float matrix[MAX][MAX], int rows, int cols)
@@ -228,6 +260,7 @@ int main()
 	{
 		printf("Упорядочить строки матрицы по убыванию количества разных элементов в каждой строке:\n");
 		sortRows(matrix, rows, cols);
+		
 		break;
 	}
 	case 4:
