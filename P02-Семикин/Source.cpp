@@ -2,8 +2,6 @@
 #include <math.h>
 #include <limits.h>
 
-const int MAX = 100;
-
 int askUserFillMatrix()
 {
 	int choise;
@@ -38,7 +36,7 @@ int scanMatrixSize(const char name[], int sizeMax)
 	return size;
 }
 
-void fillMatrixFromFile(float matrix[MAX][MAX], int& rows, int& cols, const char filename[])
+void fillMatrixFromFile(float matrix[100][100], int& rows, int& cols, const char filename[])
 {
 	FILE* f;
 	if (fopen_s(&f, filename, "r") != 0)
@@ -51,7 +49,7 @@ void fillMatrixFromFile(float matrix[MAX][MAX], int& rows, int& cols, const char
 	fclose(f);
 }
 
-void fillMatrixFromBinFile(float matrix[MAX][MAX], int& rows, int& cols, const char filename[])
+void fillMatrixFromBinFile(float matrix[100][100], int& rows, int& cols, const char filename[])
 {
 	FILE* f;
 	if (fopen_s(&f, filename, "rt") != 0)
@@ -65,7 +63,7 @@ void fillMatrixFromBinFile(float matrix[MAX][MAX], int& rows, int& cols, const c
 	fclose(f);
 }
 
-void fillMatrixRandomInt(float matrix[MAX][MAX], int rows, int cols)
+void fillMatrixRandomInt(float matrix[100][100], int rows, int cols)
 {
 	int a, b;
 	printf("Введите диапозон рандомных чисел:\nот:"); scanf_s("%d", &a);
@@ -75,14 +73,14 @@ void fillMatrixRandomInt(float matrix[MAX][MAX], int rows, int cols)
 			matrix[i][j] = (rand() % (b - a + 1) + a);
 }
 
-void fillMatrixRandomFloat(float matrix[MAX][MAX], int rows, int cols)
+void fillMatrixRandomFloat(float matrix[100][100], int rows, int cols)
 {
 	for (int i = 0; i < rows; i++)
 		for (int j = 0; j < cols; j++)
 			matrix[i][j] = (rand() % 2001 - 1000.0) / 10;
 }
 
-void outputArrToScreen(float matrix[MAX][MAX], int rows, int cols)
+void outputArrToScreen(float matrix[100][100], int rows, int cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
@@ -92,7 +90,7 @@ void outputArrToScreen(float matrix[MAX][MAX], int rows, int cols)
 	}
 }
 
-float* sumPositivElem(float matrix[MAX][MAX], int rows, int cols)
+float* sumPositivElem(float matrix[100][100], int rows, int cols)
 {
 	int n = 0;
 	float mas[50];
@@ -116,7 +114,7 @@ float* sumPositivElem(float matrix[MAX][MAX], int rows, int cols)
 	return mas;
 }
 
-void minSumSupDiag(float matrix[MAX][MAX], int rows, int cols)
+void minSumSupDiag(float matrix[100][100], int rows, int cols)
 {
 	if (rows == cols)
 	{
@@ -144,9 +142,9 @@ void minSumSupDiag(float matrix[MAX][MAX], int rows, int cols)
 		printf("Матрица не квадратная!");
 }
 
-void sortRows(float matrix[MAX][MAX], int rows, int cols)
+void sortRows(float matrix[100][100], int rows, int cols)
 {
-	float mas[MAX], min[MAX];
+	float mas[100], min[100];
 	int s = 0;
 	for (int k = 0; k < rows; k++)
 	{
@@ -185,7 +183,7 @@ void sortRows(float matrix[MAX][MAX], int rows, int cols)
 	}
 }
 
-int numberFirstRowsNoPosElem(float matrix[MAX][MAX], int rows, int cols)
+int numberFirstRowsNoPosElem(float matrix[100][100], int rows, int cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
@@ -210,7 +208,7 @@ int main()
 	г) Найти номер первой из строк, не содержащей ни одного положительного элемента(оформить в виде функции).*/
 	system("chcp 1251");
 
-	float matrix[MAX][MAX];
+	float matrix[100][100];
 	int rows, cols;
 	char filename[] = "1.txt";
 	char filenameBin[] = "2.bin";
@@ -225,14 +223,14 @@ int main()
 		break;
 	case 3:
 		srand(time(0));
-		rows = scanMatrixSize("рядов", MAX);
-		cols = scanMatrixSize("столбцов", MAX);
+		rows = scanMatrixSize("рядов", 100);
+		cols = scanMatrixSize("столбцов", 100);
 		fillMatrixRandomInt(matrix, rows, cols);
 		break;
 	case 4:
 		srand(time(0));
-		rows = scanMatrixSize("рядов", MAX);
-		cols = scanMatrixSize("столбцов", MAX);
+		rows = scanMatrixSize("рядов", 100);
+		cols = scanMatrixSize("столбцов", 100);
 		fillMatrixRandomFloat(matrix, rows, cols);
 		break;
 	}
